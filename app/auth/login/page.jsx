@@ -1,9 +1,25 @@
-import Form from "@/app/components/Form";
+'use client';
+
 import Label from "@/app/components/Label";
 import TextInput from "@/app/components/TextInput";
 import Button from "@/app/components/Button";
+import {useState} from "react";
+import axios from "axios";
 
 export default function Page() {
+
+    const [formData, setFormData] = useState({});
+
+    const handleSubmit = (event) => {
+        console.log(event)
+        event.preventDefault();
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div
@@ -13,7 +29,23 @@ export default function Page() {
                         Sign in to your account
                     </h1>
                 </div>
-                <Form className="space-y-4 md:space-y-6" action="#">
+                <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                        <Label
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            value="You Name"
+                            htmlFor="name"
+                        />
+                        <TextInput
+                            id="name"
+                            type="name"
+                            name="name"
+                            placeholder="Join"
+                            required={true}
+                            value={formData.name}
+                            onChange={handleChange}
+                        />
+                    </div>
                     <div>
                         <Label
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -26,6 +58,8 @@ export default function Page() {
                             name="email"
                             placeholder="name@company.com"
                             required={true}
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -41,6 +75,8 @@ export default function Page() {
                             name="password"
                             placeholder="**********"
                             required={true}
+                            value={formData.password}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -51,7 +87,11 @@ export default function Page() {
                                     id="remember"
                                     aria-describedby="remember"
                                     type="checkbox"
-                                    required=""/>
+                                    required={false}
+                                    name="remember"
+                                    value={formData.remember}
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="ml-3 text-sm">
                                 <Label
@@ -79,7 +119,7 @@ export default function Page() {
                         up</a>
                     </p>
 
-                </Form>
+                </form>
             </div>
         </div>
     )

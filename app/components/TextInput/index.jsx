@@ -3,7 +3,7 @@
 import {TextInput as TextInputReact} from "flowbite-react";
 
 export default function TextInput(props) {
-    const {id, placeholder, required, type, name, className} = props
+    const {id, placeholder, required, type, name, className, value, onChange} = props
 
     return (
         <TextInputReact
@@ -13,6 +13,8 @@ export default function TextInput(props) {
             className={className}
             placeholder={placeholder}
             required={!!required}
+            value={value}
+            onChange={onChange}
         />
     )
 }
