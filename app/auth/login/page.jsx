@@ -4,48 +4,46 @@ import Label from "@/app/components/Label";
 import TextInput from "@/app/components/TextInput";
 import Button from "@/app/components/Button";
 import {useState} from "react";
-import axios from "axios";
+import {postLogin} from "@/app/api";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 export default function Page() {
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        remember: ""
+    });
 
-    const handleSubmit = (event) => {
-        console.log(event)
+    const router = useRouter();
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
+
+        try {
+            await postLogin(formData)
+            router.push('/dashboards')
+        } catch (error) {
+            throw new Error(error)
+        }
     };
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = event.target;
+        setFormData({...formData, [name]: value});
     };
 
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
             <div
-                className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl">
+                className="w-full p-6 m-auto bg-white rounded shadow lg:max-w-xl">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center">
                         Sign in to your account
                     </h1>
                 </div>
                 <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                    <div>
-                        <Label
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            value="You Name"
-                            htmlFor="name"
-                        />
-                        <TextInput
-                            id="name"
-                            type="name"
-                            name="name"
-                            placeholder="Join"
-                            required={true}
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
-                    </div>
                     <div>
                         <Label
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -58,7 +56,7 @@ export default function Page() {
                             name="email"
                             placeholder="name@company.com"
                             required={true}
-                            value={formData.email}
+                            value={formData.email || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -75,7 +73,7 @@ export default function Page() {
                             name="password"
                             placeholder="**********"
                             required={true}
-                            value={formData.password}
+                            value={formData.password || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -114,9 +112,9 @@ export default function Page() {
                         Sign In
                     </Button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                        Don’t have an account yet? <a href="#"
-                                                      className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign
-                        up</a>
+                        Don’t have an account yet? <Link href="register"
+                                                         className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign
+                        up</Link>
                     </p>
 
                 </form>
