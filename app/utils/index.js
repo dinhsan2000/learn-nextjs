@@ -3,11 +3,11 @@ export const setUserData = (data) => {
 }
 
 export const getToken = () => {
-    const user = localStorage.getItem('users')
+    const user = JSON.parse(localStorage.getItem('users'))
     return user.token;
 }
 
 export const getUser = () => {
-    const user = localStorage.getItem('users')
+    const user = JSON.parse(localStorage.getItem('users'))
     return user.user
 }

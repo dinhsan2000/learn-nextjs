@@ -7,8 +7,11 @@ import {useState} from "react";
 import {postLogin} from "@/app/api";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {getToken} from "@/app/utils";
 
 export default function Page() {
+
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -16,7 +19,13 @@ export default function Page() {
         remember: ""
     });
 
-    const router = useRouter();
+    const token = getToken()
+
+    if (!token) {
+        router.push('auth/login')
+    } else {
+        router.push('/dashboards')
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
